@@ -24,13 +24,15 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-  function parseMessages(data) {
+  function parseMessages(data,conf=1) {
     // Parse messages from the text file
     const lines = data.split('\n');
     const messages = [];
+    if(conf){
     user = lines[0].match(/(\d+\/\d+\/\d+, \d+:\d+\s[APMapm]+)\s-\s([^:]+):\s(.*)/)[2].trim();
     const response = confirm(`Is this the moon (${user})? `);
     isuser = response;
+    }
     lines.forEach(line => {
       const match = line.match(/(\d+\/\d+\/\d+, \d+:\d+\s[APMapm]+)\s-\s([^:]+):\s(.*)/);
       if (match) {
@@ -45,9 +47,17 @@ document.addEventListener("DOMContentLoaded", function () {
 
     return messages;
   }
+  async function fir(){
+  try{
+  const response = await fetch('msgs/msgs.txt');
+  const text = await response.text();
+  const messages = parseMessages(text,0);
+  loadMessages(messages); // Initial load with empty messages
+  }catch(error){
 
-  loadMessages([]); // Initial load with empty messages
-
+  }
+}
+fir();
   // Event listener for file input change
   document.getElementById("fileInput").addEventListener('change', async function (event) {
     const fileInput = event.target;
