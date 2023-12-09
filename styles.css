@@ -437,3 +437,20 @@ img {
   margin:1px;
   translate: 0 2px;
 }
+
+.addbutton button{
+  background-color: #06e744;
+  width:70px;
+  height:70px;
+  font-size: 30px;
+  border:rgb(6, 231, 68);
+  border-radius:20px;
+  position: absolute;
+  right:20px;
+  bottom:10px;
+}
+
+.addbutton button:hover{
+cursor: pointer;
+background-color:rgba(6,231,62,0.5)
+}

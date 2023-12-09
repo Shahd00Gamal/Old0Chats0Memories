@@ -1,22 +1,20 @@
 let user = 'Shahd ✨';
-
+let isuser = true;
 document.addEventListener("DOMContentLoaded", function () {
   const chatContainer = document.querySelector('.chat-container');
 
   function createMessageElement(message) {
     const messageBox = document.createElement('div');
-    messageBox.classList.add('message-box', message.sender === user ? 'my-message' : 'friend-message');
+    messageBox.classList.add('message-box', (isuser && (message.sender === user)) || (!isuser && (message.sender != user)) ? 'my-message' : 'friend-message');
     messageBox.innerHTML = `<p>${twemoji.parse(message.content)}<br><span>${message.timestamp}</span></p>`;
     return messageBox;
   }
 
-  async function loadMessages() {
+  async function loadMessages(messages) {
     try {
-      // Read messages from the text file (replace 'messages.txt' with your actual file path)
-      const response = await fetch('media/msgs.txt');
-      const data = await response.text();
-      const messages = parseMessages(data);
-      
+      // Clear existing messages
+      chatContainer.innerHTML = '';
+
       messages.forEach(message => {
         const messageElement = createMessageElement(message);
         chatContainer.appendChild(messageElement);
@@ -30,7 +28,9 @@ document.addEventListener("DOMContentLoaded", function () {
     // Parse messages from the text file
     const lines = data.split('\n');
     const messages = [];
-
+    user = lines[0].match(/(\d+\/\d+\/\d+, \d+:\d+\s[APMapm]+)\s-\s([^:]+):\s(.*)/)[2].trim();
+    const response = confirm(`Is this the moon (${user})? `);
+    isuser = response;
     lines.forEach(line => {
       const match = line.match(/(\d+\/\d+\/\d+, \d+:\d+\s[APMapm]+)\s-\s([^:]+):\s(.*)/);
       if (match) {
@@ -46,5 +46,26 @@ document.addEventListener("DOMContentLoaded", function () {
     return messages;
   }
 
-  loadMessages();
+  loadMessages([]); // Initial load with empty messages
+
+  // Event listener for file input change
+  document.getElementById("fileInput").addEventListener('change', async function (event) {
+    const fileInput = event.target;
+    const file = fileInput.files[0];
+
+    if (file) {
+      try {
+        const text = await file.text();
+        const messages = parseMessages(text);
+        loadMessages(messages);
+      } catch (error) {
+        console.error('Error reading file:', error);
+      }
+    }
+  });
+
+  // Event listener for button click to trigger file input click
+  document.getElementById("addbutton").onclick = function () {
+    document.getElementById("fileInput").click();
+  };
 });
