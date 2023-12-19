@@ -49,7 +49,7 @@ document.addEventListener("DOMContentLoaded", function () {
   }
   async function fir(){
   try{
-  const response = await fetch('msgs/msgs.txt');
+  const response = await fetch('msgs.txt');
   const text = await response.text();
   const messages = parseMessages(text,0);
   loadMessages(messages); // Initial load with empty messages
