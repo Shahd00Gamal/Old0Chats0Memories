@@ -57,7 +57,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   }
 }
-fir();
+//fir();
   // Event listener for file input change
   document.getElementById("fileInput").addEventListener('change', async function (event) {
     const fileInput = event.target;
