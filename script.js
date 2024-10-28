@@ -6,8 +6,9 @@ document.addEventListener("DOMContentLoaded", function () {
   function createMessageElement(message) {
     const messageBox = document.createElement('div');
     messageBox.classList.add('message-box', (isuser && (message.sender === user)) || (!isuser && (message.sender != user)) ? 'my-message' : 'friend-message');
- //   messageBox.innerHTML = `<p>${twemoji.parse(message.content)}<br><span>${message.timestamp}</span></p>`;
-    messageBox.innerHTML = `<p>${joypixels.shortnameToImage(message.content)}<br><span>${message.timestamp}</span></p>`;
+   //  messageBox.innerHTML = `<p>${twemoji.parse(message.content)}<br><span>${message.timestamp}</span></p>`;
+    // messageBox.innerHTML = `<p>${joypixels.shortnameToImage(message.content)}<br><span>${message.timestamp}</span></p>`;
+    messageBox.innerHTML = `<p>${message.content}<br><span>${message.timestamp}</span></p>`;
 
     return messageBox;
   }
